@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<AsciiFont xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>TwoChar</Name>
+  <CharWidth>10</CharWidth>
+  <CharHeight>16</CharHeight>
+  <BitmapsPath>consola</BitmapsPath>
+  <Charset>
+    <AsciiChar Name="pound" Character="35" />
+    <AsciiChar Name="space" Character="32" />
+  </Charset>
+</AsciiFont>

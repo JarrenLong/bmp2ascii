@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<AsciiFont xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>OnlySymbols</Name>
+  <CharWidth>10</CharWidth>
+  <CharHeight>16</CharHeight>
+  <BitmapsPath>consola</BitmapsPath>
+  <Charset>
+    <AsciiChar Name="tick" Character="96" />
+    <AsciiChar Name="tilde" Character="126" />
+    <AsciiChar Name="exclamation" Character="33" />
+    <AsciiChar Name="at" Character="64" />
+    <AsciiChar Name="pound" Character="35" />
+    <AsciiChar Name="dollar" Character="36" />
+    <AsciiChar Name="percent" Character="37" />
+    <AsciiChar Name="chevron" Character="94" />
+    <AsciiChar Name="ampersand" Character="38" />
+    <AsciiChar Name="asterisk" Character="42" />
+    <AsciiChar Name="lparen" Character="40" />
+    <AsciiChar Name="rparen" Character="41" />
+    <AsciiChar Name="minus" Character="45" />
+    <AsciiChar Name="underscore" Character="95" />
+    <AsciiChar Name="plus" Character="43" />
+    <AsciiChar Name="equals" Character="61" />
+    <AsciiChar Name="lbracket" Character="91" />
+    <AsciiChar Name="lcurly" Character="123" />
+    <AsciiChar Name="rbracket" Character="93" />
+    <AsciiChar Name="rcurly" Character="125" />
+    <AsciiChar Name="slash" Character="92" />
+    <AsciiChar Name="pipe" Character="124" />
+    <AsciiChar Name="colon" Character="58" />
+    <AsciiChar Name="semicolon" Character="59" />
+    <AsciiChar Name="singlequote" Character="39" />
+    <AsciiChar Name="doublequote" Character="34" />
+    <AsciiChar Name="comma" Character="44" />
+    <AsciiChar Name="lt" Character="60" />
+    <AsciiChar Name="period" Character="46" />
+    <AsciiChar Name="gt" Character="62" />
+    <AsciiChar Name="backslash" Character="47" />
+    <AsciiChar Name="question" Character="63" />
+    <AsciiChar Name="space" Character="32" />
+  </Charset>
+</AsciiFont>
