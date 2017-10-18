@@ -2,7 +2,6 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
+/.vs
 /obj
-/.vs/BitmapToASCII/v15/sqlite3
-/bin/Debug
-/.vs/BitmapToASCII/v15
+/bin
