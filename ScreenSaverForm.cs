@@ -123,9 +123,9 @@ namespace BitmapToASCII.Screensaver
       }
     }
 
-    private int r = 0, g = 16, b = 32;
-    private int rStep = 0, gStep = 16, bStep = 32;
-    private bool rUp = true, gUp = true, bUp = false;
+    private int r = 0, g = 0, b = 0;
+    private int rStep = 0, gStep = 0, bStep = 0;
+    private bool rUp = true, gUp = true, bUp = true;
 
     private static void NextColor(ref int curColor, int step, ref bool up)
     {
@@ -153,14 +153,14 @@ namespace BitmapToASCII.Screensaver
       e.Graphics.Clear(BackColor);
 
       // Figure out what size font to use to get everything to fit on screen
-      Font f;
+      Font font;
       SizeF dims;
       float sizeInPixels = 20.1f;
       do
       {
         sizeInPixels -= 0.1f;
-        f = new Font("Consolas", sizeInPixels, FontStyle.Regular, GraphicsUnit.Pixel, 0, false);
-        dims = e.Graphics.MeasureString(ascii, f);
+        font = new Font("Consolas", sizeInPixels, FontStyle.Regular, GraphicsUnit.Pixel, 0, false);
+        dims = e.Graphics.MeasureString(ascii, font);
       } while (dims.Width > Width || dims.Height > Height);
 
       NextColor(ref r, rStep, ref rUp);
@@ -168,15 +168,20 @@ namespace BitmapToASCII.Screensaver
       NextColor(ref b, bStep, ref bUp);
 
       Color textColor = Color.FromArgb(255, r, g, b);
-      Brush c = new SolidBrush(textColor);
+      Brush brushColor = new SolidBrush(textColor);
 
-      var box = new Rectangle((int)((Width - dims.Width - 2) / 2), (int)((Height - dims.Height - 2) / 2), (int)(dims.Width + 2), (int)(dims.Height + 2));
-      e.Graphics.DrawString(ascii, f, c, box);
-      //e.Graphics.DrawRectangle(Pens.Red, box);
+      var box = new Rectangle(
+        (int)((Width - dims.Width - 2) / 2), // X
+        (int)((Height - dims.Height - 2) / 2), // Y
+        (int)(dims.Width + 2), // Width
+        (int)(dims.Height + 2)); // Height
+      // Draw the ASCII art
+      e.Graphics.DrawString(ascii, font, brushColor, box);
+
       string fmt = "{0}: {1}, step: {2}, direction: {3}";
-      e.Graphics.DrawString(string.Format(fmt, "Red", r, rStep, rUp ? "Up" : "Down"), f, c, new PointF(0, 0));
-      e.Graphics.DrawString(string.Format(fmt, "Green", g, gStep, gUp ? "Up" : "Down"), f, c, new PointF(0, 24));
-      e.Graphics.DrawString(string.Format(fmt, "Blue", b, bStep, bUp ? "Up" : "Down"), f, c, new PointF(0, 48));
+      e.Graphics.DrawString(string.Format(fmt, "Red", r, rStep, rUp ? "Up" : "Down"), font, brushColor, new PointF(0, 0));
+      e.Graphics.DrawString(string.Format(fmt, "Green", g, gStep, gUp ? "Up" : "Down"), font, brushColor, new PointF(0, 24));
+      e.Graphics.DrawString(string.Format(fmt, "Blue", b, bStep, bUp ? "Up" : "Down"), font, brushColor, new PointF(0, 48));
     }
 
     string ascii = "";
@@ -190,10 +195,10 @@ namespace BitmapToASCII.Screensaver
         {
           lastImg = srcFile;
 
-          // Start with white
-          r = 255;
-          g = 255;
-          b = 255;
+          // Start with a light gray color
+          r = 192;
+          g = 192;
+          b = 192;
 
           ascii = "Loading ...";
           Invalidate();
