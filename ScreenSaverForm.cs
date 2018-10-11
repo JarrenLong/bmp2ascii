@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -74,13 +75,16 @@ namespace BitmapToASCII.Screensaver
       previewMode = true;
     }
 
+    private string[] Images = new string[] { };
+    private int ImageIndex = 0;
     private AsciiFont font = null;
     private string srcFile = "";
-    private void InitGenerator()
-    {
-      font = AsciiFont.LoadConsola();
-      srcFile = "..\\..\\testFiles\\smb-logo.png";
-    }
+    private string ascii = "";
+    private string lastImg = "";
+    private bool firstRun = true;
+    private int r = 0, g = 0, b = 0;
+    private int rStep = 0, gStep = 0, bStep = 0;
+    private bool rUp = true, gUp = true, bUp = true;
 
     private void ScreenSaverForm_KeyPress(object sender, KeyPressEventArgs e)
     {
@@ -90,14 +94,32 @@ namespace BitmapToASCII.Screensaver
 
     private void ScreenSaverForm_Load(object sender, EventArgs e)
     {
-      LoadSettings();
-      InitGenerator();
-
       Cursor.Hide();
       TopMost = true;
 
-      timer1.Interval = 10 /* 100 FPS  (approx) */;
-      timer1.Start();
+      font = AsciiFont.LoadConsola();
+      srcFile = "..\\..\\testFiles\\smb-logo.png";
+
+      string path = "C:\\Users\\Public\\Public Pictures\\";
+      TimerCycleImages.Interval = 30000;
+
+      RegistryKey key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\AsciiScreensaver");
+      if (key != null)
+      {
+        path = (string)key.GetValue("ImageFolderPath");
+        TimerCycleImages.Interval = 1000 * int.Parse((string)key.GetValue("RotateEvery"));
+      }
+
+      ImageIndex = 0;
+      Images = Directory.GetFiles(path);
+      if (Images.Length == 0)
+        Images = new string[] { "" };
+      srcFile = Images[ImageIndex];
+
+      TimerCycleImages.Start();
+
+      TimerCycleColor.Interval = 10 /* 100 FPS  (approx) */;
+      TimerCycleColor.Start();
     }
 
     private void ScreenSaverForm_MouseClick(object sender, MouseEventArgs e)
@@ -122,10 +144,6 @@ namespace BitmapToASCII.Screensaver
         mouseLocation = e.Location;
       }
     }
-
-    private int r = 0, g = 0, b = 0;
-    private int rStep = 0, gStep = 0, bStep = 0;
-    private bool rUp = true, gUp = true, bUp = true;
 
     private static void NextColor(ref int curColor, int step, ref bool up)
     {
@@ -184,9 +202,6 @@ namespace BitmapToASCII.Screensaver
       e.Graphics.DrawString(string.Format(fmt, "Blue", b, bStep, bUp ? "Up" : "Down"), font, brushColor, new PointF(0, 48));
     }
 
-    string ascii = "";
-    string lastImg = "";
-
     private void timer1_Tick(object sender, EventArgs e)
     {
       try
@@ -195,13 +210,16 @@ namespace BitmapToASCII.Screensaver
         {
           lastImg = srcFile;
 
-          // Start with a light gray color
-          r = 192;
-          g = 192;
-          b = 192;
+          if (firstRun)
+          {
+            // Start with a light gray color
+            r = 192;
+            g = 192;
+            b = 192;
 
-          ascii = "Loading ...";
-          Invalidate();
+            ascii = "Loading ...";
+            Invalidate();
+          }
 
           // Load the source image
           Bitmap src;
@@ -211,19 +229,24 @@ namespace BitmapToASCII.Screensaver
           // Do the image -> ASCII conversion
           ascii = src.ToAscii(font, 60, AsciiColoringMode.NoColor, true, 120, true).ToString();
 
-          // Pick random starting colors, steps, and directions
-          Random rnd = new Random();
-          r = rnd.Next(0, 255);
-          g = rnd.Next(0, 255);
-          b = rnd.Next(0, 255);
+          if (firstRun)
+          {
+            firstRun = false;
 
-          rUp = rnd.Next(0, 1000) % 2 == 0;
-          gUp = rnd.Next(0, 1000) % 2 == 1;
-          bUp = rnd.Next(0, 1000) > 500;
+            // Pick random starting colors, steps, and directions
+            Random rnd = new Random();
+            r = rnd.Next(0, 255);
+            g = rnd.Next(0, 255);
+            b = rnd.Next(0, 255);
 
-          rStep = rnd.Next(2, 24);
-          gStep = rnd.Next(2, 24);
-          bStep = rnd.Next(2, 24);
+            rUp = rnd.Next(0, 1000) % 2 == 0;
+            gUp = rnd.Next(0, 1000) % 2 == 1;
+            bUp = rnd.Next(0, 1000) > 500;
+
+            rStep = rnd.Next(2, 24);
+            gStep = rnd.Next(2, 24);
+            bStep = rnd.Next(2, 24);
+          }
         }
       }
       catch
@@ -234,14 +257,14 @@ namespace BitmapToASCII.Screensaver
       Invalidate();
     }
 
-    private void LoadSettings()
+    private void TimerCycleImages_Tick(object sender, EventArgs e)
     {
-      //// Use the string from the Registry if it exists
-      //RegistryKey key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Demo_ScreenSaver");
-      //if (key == null)
-      //  textLabel.Text = "C# Screen Saver";
-      //else
-      //  textLabel.Text = (string)key.GetValue("text");
+      if (ImageIndex + 1 < Images.Length)
+        ImageIndex++;
+      else
+        ImageIndex = 0;
+
+      srcFile = Images[ImageIndex];
     }
   }
 }

@@ -29,14 +29,21 @@
     private void InitializeComponent()
     {
       this.components = new System.ComponentModel.Container();
-      this.timer1 = new System.Windows.Forms.Timer(this.components);
+      this.TimerCycleColor = new System.Windows.Forms.Timer(this.components);
+      this.TimerCycleImages = new System.Windows.Forms.Timer(this.components);
       this.SuspendLayout();
       // 
-      // timer1
+      // TimerCycleColor
       // 
-      this.timer1.Enabled = true;
-      this.timer1.Interval = 30;
-      this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+      this.TimerCycleColor.Enabled = true;
+      this.TimerCycleColor.Interval = 30;
+      this.TimerCycleColor.Tick += new System.EventHandler(this.timer1_Tick);
+      // 
+      // TimerCycleImages
+      // 
+      this.TimerCycleImages.Enabled = true;
+      this.TimerCycleImages.Interval = 30000;
+      this.TimerCycleImages.Tick += new System.EventHandler(this.TimerCycleImages_Tick);
       // 
       // ScreenSaverForm
       // 
@@ -59,7 +66,8 @@
 
     #endregion
 
-    private System.Windows.Forms.Timer timer1;
+    private System.Windows.Forms.Timer TimerCycleColor;
+    private System.Windows.Forms.Timer TimerCycleImages;
   }
 }
 
