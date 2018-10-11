@@ -168,10 +168,15 @@ namespace BitmapToASCII.Screensaver
       NextColor(ref b, bStep, ref bUp);
 
       Color textColor = Color.FromArgb(255, r, g, b);
+      Brush c = new SolidBrush(textColor);
 
       var box = new Rectangle((int)((Width - dims.Width - 2) / 2), (int)((Height - dims.Height - 2) / 2), (int)(dims.Width + 2), (int)(dims.Height + 2));
-      e.Graphics.DrawString(ascii, f, new SolidBrush(textColor), box);
+      e.Graphics.DrawString(ascii, f, c, box);
       //e.Graphics.DrawRectangle(Pens.Red, box);
+      string fmt = "{0}: {1}, step: {2}, direction: {3}";
+      e.Graphics.DrawString(string.Format(fmt, "Red", r, rStep, rUp ? "Up" : "Down"), f, c, new PointF(0, 0));
+      e.Graphics.DrawString(string.Format(fmt, "Green", g, gStep, gUp ? "Up" : "Down"), f, c, new PointF(0, 24));
+      e.Graphics.DrawString(string.Format(fmt, "Blue", b, bStep, bUp ? "Up" : "Down"), f, c, new PointF(0, 48));
     }
 
     string ascii = "";
