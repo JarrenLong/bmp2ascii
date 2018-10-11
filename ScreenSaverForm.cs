@@ -217,9 +217,9 @@ namespace BitmapToASCII.Screensaver
           g = rnd.Next(0, 255);
           b = rnd.Next(0, 255);
 
-          rUp = r % 2 == 0;
-          gUp = g % 2 == 1;
-          bUp = b > 128;
+          rUp = rnd.Next(0, 1000) % 2 == 0;
+          gUp = rnd.Next(0, 1000) % 2 == 1;
+          bUp = rnd.Next(0, 1000) > 500;
 
           rStep = rnd.Next(2, 24);
           gStep = rnd.Next(2, 24);
