@@ -1,9 +1,10 @@
-﻿using System.Threading;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using System;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace BitmapToASCII.Screensaver
@@ -112,7 +113,14 @@ namespace BitmapToASCII.Screensaver
       }
 
       ImageIndex = 0;
-      Images = Directory.GetFiles(path);
+      Images = Directory.GetFiles(path)
+        .Where(x =>
+          x.ToLower().EndsWith(".jpg") ||
+          x.ToLower().EndsWith(".jpeg") ||
+          x.ToLower().EndsWith(".png") ||
+          x.ToLower().EndsWith(".bmp")
+        ).ToArray();
+
       if (Images.Length == 0)
         Images = new string[] { "" };
       srcFile = Images[ImageIndex];
