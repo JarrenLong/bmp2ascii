@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using System.Threading;
+using Microsoft.Win32;
 using System;
 using System.Drawing;
 using System.IO;
@@ -204,30 +205,34 @@ namespace BitmapToASCII.Screensaver
 
     private void timer1_Tick(object sender, EventArgs e)
     {
-      try
+      if (lastImg != srcFile)
       {
-        if (lastImg != srcFile)
+        lastImg = srcFile;
+
+        if (firstRun)
         {
-          lastImg = srcFile;
+          // Start with a light gray color
+          r = 192;
+          g = 192;
+          b = 192;
 
-          if (firstRun)
+          ascii = "Loading ...";
+          Invalidate();
+        }
+
+        ThreadPool.QueueUserWorkItem((o) =>
+        {
+          try
           {
-            // Start with a light gray color
-            r = 192;
-            g = 192;
-            b = 192;
-
-            ascii = "Loading ...";
-            Invalidate();
+            // Load the source image and do the image -> ASCII conversion
+            using (var streamReader = new StreamReader(srcFile))
+            using (Bitmap src = (Bitmap)Image.FromStream(streamReader.BaseStream))
+              ascii = src.ToAscii(font, 60, AsciiColoringMode.NoColor, true, 120, true).ToString();
           }
-
-          // Load the source image
-          Bitmap src;
-          using (var streamReader = new StreamReader(srcFile))
-            src = (Bitmap)Image.FromStream(streamReader.BaseStream);
-
-          // Do the image -> ASCII conversion
-          ascii = src.ToAscii(font, 60, AsciiColoringMode.NoColor, true, 120, true).ToString();
+          catch
+          {
+            ascii = "Could not open image! :/";
+          }
 
           if (firstRun)
           {
@@ -247,11 +252,9 @@ namespace BitmapToASCII.Screensaver
             gStep = rnd.Next(2, 24);
             bStep = rnd.Next(2, 24);
           }
-        }
-      }
-      catch
-      {
-        ascii = "Could not open image! :/";
+
+          Invalidate();
+        });
       }
 
       Invalidate();
