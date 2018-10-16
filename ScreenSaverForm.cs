@@ -205,10 +205,10 @@ namespace BitmapToASCII.Screensaver
       // Draw the ASCII art
       e.Graphics.DrawString(ascii, font, brushColor, box);
 
-      string fmt = "{0}: {1}, step: {2}, direction: {3}";
-      e.Graphics.DrawString(string.Format(fmt, "Red", r, rStep, rUp ? "Up" : "Down"), font, brushColor, new PointF(0, 0));
-      e.Graphics.DrawString(string.Format(fmt, "Green", g, gStep, gUp ? "Up" : "Down"), font, brushColor, new PointF(0, 24));
-      e.Graphics.DrawString(string.Format(fmt, "Blue", b, bStep, bUp ? "Up" : "Down"), font, brushColor, new PointF(0, 48));
+      //string fmt = "{0}: {1}, step: {2}, direction: {3}";
+      //e.Graphics.DrawString(string.Format(fmt, "Red", r, rStep, rUp ? "Up" : "Down"), font, brushColor, new PointF(0, 0));
+      //e.Graphics.DrawString(string.Format(fmt, "Green", g, gStep, gUp ? "Up" : "Down"), font, brushColor, new PointF(0, 24));
+      //e.Graphics.DrawString(string.Format(fmt, "Blue", b, bStep, bUp ? "Up" : "Down"), font, brushColor, new PointF(0, 48));
     }
 
     private void timer1_Tick(object sender, EventArgs e)
